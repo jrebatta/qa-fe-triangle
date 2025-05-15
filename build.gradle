@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.23'
 }
 
 group = 'org.example'
@@ -10,30 +11,40 @@ repositories {
     mavenCentral()
 }
 
-def cucumberVersion = '7.22.1'
-def junitVersion = '4.13.2'
-def seleniumVersion = '4.32.0'
-def webDriverManagerVersion = '6.1.0'
+ext {
+    serenityVersion = '4.2.23'
+    cucumberVersion = '7.22.1'
+    junitVersion = '4.13.2'
+    seleniumVersion = '4.32.0'
+    webDriverManagerVersion = '6.1.0'
+    slf4jVersion = '2.0.17'
+}
 
 dependencies {
     testImplementation "junit:junit:${junitVersion}"
-
     testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
     testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+    testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
 
     implementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
-
     implementation "io.github.bonigarcia:webdrivermanager:${webDriverManagerVersion}"
 }
 
 test {
+    def tag = System.getProperty("tag") ?: ""
+    if (tag) {
+        systemProperty "cucumber.filter.tags", tag
+    }
     useJUnit()
     testLogging {
         events "passed", "skipped", "failed"
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     sourceCompatibility = '21'
     targetCompatibility = '21'
 }

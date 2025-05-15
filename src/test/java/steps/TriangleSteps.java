@@ -1,11 +1,14 @@
 package steps;
 
 import io.cucumber.java.en.*;
+import net.serenitybdd.annotations.Steps;
 import pages.TrianglePage;
 
 public class TriangleSteps {
 
-    private final TrianglePage trianglePage = new TrianglePage();
+    @Steps
+    TrianglePage trianglePage;
+
     private int ladoA, ladoB, ladoC;
 
     @Given("el usuario accede a la página principal")

@@ -27,3 +27,12 @@ jobs:
 
       - name: Run tests with tag
         run: ./gradlew clean test -Dtag="${{ github.event.inputs.tag }}"
+
+      - name: Generate Serenity report
+        run: ./gradlew aggregate
+
+      - name: Upload Serenity Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: serenity-report
+          path: target/serenity-reports

@@ -1,4 +1,4 @@
-Feature: Validacion de triangulos
+Feature: Validacion de triángulos inválidos
 
   Background:
     Given el usuario accede a la página principal
