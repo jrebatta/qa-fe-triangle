@@ -1,4 +1,4 @@
-name: Run Tests by Tag
+name: Run Serenity Tests by Tag
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew clean test aggregate -Dtag="${{ github.event.inputs.tag }}"
 
       - name: Upload Serenity Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: serenity-report
-          path: qa-fe-triangle/target/site/serenity/index.html
+          path: qa-fe-triangle/target/site/serenity/
