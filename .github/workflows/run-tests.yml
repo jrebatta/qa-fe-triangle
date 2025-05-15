@@ -35,7 +35,7 @@ jobs:
         run: ls -la target/serenity-reports
 
       - name: Upload Serenity Report
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: serenity-report
           path: target/serenity-reports
