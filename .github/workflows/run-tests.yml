@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
@@ -27,11 +27,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable libxss1 libappindicator3-1 libgdk-pixbuf2.0-0 libgbm-dev
 
-      - name: Grant permission to gradlew
-        run: chmod +x gradlew
+      - name: Grant permission to mvnw
+        run: chmod +x mvnw
 
-      - name: Install WebDriverManager for managing ChromeDriver
-        run: ./gradlew dependencies
+      - name: Run tests with Maven and tag
+        run: mvn clean test -Dcucumber.options="--tags @${{ github.event.inputs.tag }}"
 
-      - name: Run tests with tag
-        run: ./gradlew clean test aggregate -Dtag="${{ github.event.inputs.tag }}"
+      - name: Upload Serenity Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: serenity-report
+          path: target/serenity-reports
