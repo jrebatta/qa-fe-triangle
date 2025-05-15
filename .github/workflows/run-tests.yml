@@ -1,4 +1,4 @@
-name: Maven Tests
+name: Run Tests By Tag
 
 on:
   workflow_dispatch:
