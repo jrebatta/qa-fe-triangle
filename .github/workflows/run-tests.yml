@@ -1,4 +1,4 @@
-name: Run Cucumber Tests by Tag
+name: Run Tests by Tag
 
 on:
   workflow_dispatch:
@@ -25,5 +25,22 @@ jobs:
       - name: Grant permission to gradlew
         run: chmod +x gradlew
 
+      - name: Create Runner.java with dynamic tag
+        run: |
+          TAG=${{ github.event.inputs.tag }}
+          sed "s/@REPLACE_TAG/@$TAG/" scripts/Runner.java.template > src/test/java/runner/Runner.java
+
       - name: Run tests with tag
-        run: ./gradlew clean test -Dtag="${{ github.event.inputs.tag }}"
+        run: ./gradlew clean test
+
+      - name: Upload Cucumber XML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-report-xml
+          path: target/cucumber-report.xml
+
+      - name: Upload Cucumber HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-report-html
+          path: target/cucumber-report.html
