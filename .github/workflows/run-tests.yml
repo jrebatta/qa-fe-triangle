@@ -26,4 +26,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run tests with tag
-        run: ./gradlew clean test -Dtag="${{ github.event.inputs.tag }}"
+        run: ./gradlew clean test aggregate -Dtag="${{ github.event.inputs.tag }}"
