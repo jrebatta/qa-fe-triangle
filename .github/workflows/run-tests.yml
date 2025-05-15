@@ -1,10 +1,10 @@
-name: Run Tests by Tag
+name: Maven Tests
 
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to run (e.g. @unhappypath)'
+        description: 'Tag to execute'
         required: true
         default: '@happypath'
 
@@ -22,6 +22,17 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2
+
+      - name: Install dependencies
+        run: mvn install -DskipTests
+
       - name: Install dependencies for headless Chrome
         run: |
           sudo apt-get update
@@ -30,11 +41,5 @@ jobs:
       - name: Grant permission to mvnw
         run: chmod +x mvnw
 
-      - name: Run tests with Maven and tag
+      - name: Run tests with tag
         run: mvn clean test -Dcucumber.options="--tags @${{ github.event.inputs.tag }}"
-
-      - name: Upload Serenity Reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: serenity-report
-          path: target/serenity-reports
