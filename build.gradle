@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+def cucumberVersion = '7.22.1'
+def junitVersion = '4.13.2'
+def seleniumVersion = '4.32.0'
+def webDriverManagerVersion = '6.1.0'
+
+dependencies {
+    testImplementation "junit:junit:${junitVersion}"
+
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+
+    implementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+
+    implementation "io.github.bonigarcia:webdrivermanager:${webDriverManagerVersion}"
+}
+
+test {
+    useJUnit()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+}
