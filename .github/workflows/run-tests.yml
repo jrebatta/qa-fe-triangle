@@ -1,12 +1,12 @@
-name: Run Serenity Tests
+name: Run Tests by Tag
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to run (e.g. @unhappypath)'
+        required: true
+        default: '@happypath'
 
 jobs:
   test:
@@ -25,12 +25,12 @@ jobs:
       - name: Install dependencies for headless Chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxss1 libappindicator3-1 libgdk-pixbuf2.0-0 libgbm-dev
+          sudo apt-get install -y google-chrome-stable libxss1 libappindicator3-1 libgdk-pixbuf2.0-0 libgbm-dev
 
-      - name: Set up ChromeDriver
-        uses: actions/setup-chrome-driver@v2
-        with:
-          chrome-version: 'latest'
+      - name: Install WebDriverManager
+        run: |
+          # Install WebDriverManager for managing ChromeDriver
+          ./gradlew dependencies
 
       - name: Grant permission to gradlew
         run: chmod +x gradlew
