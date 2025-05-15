@@ -42,6 +42,7 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
+    systemProperty "serenity.outputDirectory", "target/serenity-reports"
 }
 
 tasks.withType(JavaCompile).configureEach {
