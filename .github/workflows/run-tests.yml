@@ -27,13 +27,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable libxss1 libappindicator3-1 libgdk-pixbuf2.0-0 libgbm-dev
 
-      - name: Install WebDriverManager
-        run: |
-          # Install WebDriverManager for managing ChromeDriver
-          ./gradlew dependencies
-
       - name: Grant permission to gradlew
         run: chmod +x gradlew
+
+      - name: Install WebDriverManager for managing ChromeDriver
+        run: ./gradlew dependencies
 
       - name: Run tests with tag
         run: ./gradlew clean test aggregate -Dtag="${{ github.event.inputs.tag }}"
