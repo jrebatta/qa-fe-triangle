@@ -1,3 +1,4 @@
+@allTests
 Feature: Validacion de triangulos
 
   Background:

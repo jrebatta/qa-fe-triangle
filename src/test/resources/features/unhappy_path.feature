@@ -1,3 +1,4 @@
+@allTests
 Feature: Validacion de triángulos inválidos
 
   Background:
