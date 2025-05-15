@@ -1,0 +1,35 @@
+name: Run Tests by Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Cucumber tag (e.g. @happypath, @unhappypath)'
+        required: true
+        default: '@happypath'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permissions to Gradle wrapper
+        run: chmod +x ./gradlew
+
+      - name: Run Serenity tests with tag
+        run: ./gradlew clean test aggregate -Dtag="${{ github.event.inputs.tag }}"
+
+      - name: Upload Serenity Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: serenity-report
+          path: qa-fe-triangle/target/site/serenity/index.html
