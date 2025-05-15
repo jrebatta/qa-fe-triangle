@@ -1,0 +1,29 @@
+name: Run Cucumber Tests by Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to run (e.g. @unhappypath)'
+        required: true
+        default: '@unhappypath'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant permission to gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests with tag
+        run: ./gradlew clean test -Dtag="${{ github.event.inputs.tag }}"
