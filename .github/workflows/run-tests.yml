@@ -31,8 +31,11 @@ jobs:
       - name: Generate Serenity report
         run: ./gradlew aggregate
 
+      - name: List target folder contents (for debugging)
+        run: ls -la target/serenity-reports
+
       - name: Upload Serenity Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.0.0
         with:
           name: serenity-report
           path: target/serenity-reports
